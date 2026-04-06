@@ -49,7 +49,8 @@ mysql-deep-dive의 innodb_buffer_pool_size 설정
   └→ 이 레포 Ch2 (Page Cache와 이중 캐싱)
 
 kafka-deep-dive의 Zero-copy 성능
-  └→ 이 레포 Ch4 (sendfile + Sequential I/O)
+  └→ 이 레포 Ch4-03 (Sequential Append → Kafka 설계 원칙)
+         Ch5-05 (sendfile() → Zero-copy 구현)
 
 docker-deep-dive의 컨테이너 격리 원리
   └→ 이 레포 Ch6 (namespace + cgroups)
@@ -294,11 +295,11 @@ ss -tanp                        # 모든 TCP 소켓 상태 + 프로세스 정보
 ss -s                           # 소켓 통계 요약 (TIME_WAIT 수 등)
 cat /proc/net/tcp               # TCP 연결 상태 raw 데이터
 
-# ─────────────── cgroups (컨테이너 실험) ───────────────
-cat /sys/fs/cgroup/memory/docker/<id>/memory.usage_in_bytes
-cat /sys/fs/cgroup/memory/docker/<id>/memory.limit_in_bytes
-cat /sys/fs/cgroup/cpu/docker/<id>/cpu.cfs_quota_us
-cat /sys/fs/cgroup/cpu/docker/<id>/cpu.cfs_period_us
+# ─────────────── cgroups (컨테이너 실험, cgroups v2 기준) ───────────────
+cat /sys/fs/cgroup/system.slice/docker-<id>.scope/memory.current
+cat /sys/fs/cgroup/system.slice/docker-<id>.scope/memory.max
+cat /sys/fs/cgroup/system.slice/docker-<id>.scope/cpu.max
+cat /sys/fs/cgroup/system.slice/docker-<id>.scope/cpu.stat
 ```
 
 ---
